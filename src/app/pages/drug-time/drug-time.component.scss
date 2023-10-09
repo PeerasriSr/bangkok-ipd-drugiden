@@ -1,0 +1,20 @@
+.gridcss {
+  height: 100%;
+  display: grid;
+  // column-gap: 8px;
+  grid-template-columns: 50% auto;
+  // padding: 10px;
+}
+
+.grid-item {
+  // border: 1px solid grey;
+  border-style: ridge;
+}
+
+h3{
+  margin: 0;
+}
+
+.bkRow{
+  background-color: lightgrey;
+}

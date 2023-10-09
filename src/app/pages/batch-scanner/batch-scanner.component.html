@@ -1,0 +1,103 @@
+<div class="container-fluid">
+  <div class="card">
+    <!-- <ngx-scanner-qrcode #action="scanner" ></ngx-scanner-qrcode> -->
+    <div class="row">
+      <div class="col"></div>
+      <div class="col">
+        <div [hidden]="!isScan">
+          <ngx-scanner-qrcode
+            #action="scanner"
+            (event)="onEvent(action.data.value); action.stop()"
+          ></ngx-scanner-qrcode>
+        </div>
+      </div>
+      <div class="col"></div>
+    </div>
+
+    <div
+      *ngIf="listDrug.length > 0"
+      class="p-2"
+      style="border-bottom: 1px solid lightgray"
+    >
+      <div class="grid-container gridHead" style="font-size: 1rem">
+        <div class="grid-item">
+          <b
+            ><span class="material-icons pointer" (click)="clear()">
+              arrow_back
+            </span>
+            เตียง {{ patient.Bed }}</b
+          >
+        </div>
+        <div class="grid-item">
+          <b>HN {{ patient.PatientId }}</b>
+        </div>
+        <div class="grid-item">
+          <b>ชื่อ {{ patient.PatientName }}</b>
+        </div>
+        <div class="grid-item">
+          <b>วันที่ {{ patient.AdminDate }}</b>
+        </div>
+        <div class="grid-item">
+          <b>เวลา {{ patient.AdminTime }} น.</b>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-container gridImg">
+      <div *ngFor="let x of listDrug" class="p-2">
+        <div class="grid-item">
+          <img
+            *ngIf="x.img"
+            [src]="x.img"
+            alt="รูปภาพ"
+            style="width: 18.75rem"
+          />
+          <span
+            class="material-icons"
+            style="font-size: 6.3em; color: lightgrey"
+            *ngIf="!x.img"
+          >
+            add_a_photo
+          </span>
+          <div>
+            <b style="font-size: 1rem"
+              >{{ x.MedicationName }} = {{ x.TabletCount }}</b
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <span>{{ action.data.value | json }}</span> -->
+    <!-- <span>{{ action.data | async | json }}</span> -->
+    <!-- <p *ngIf="action.isLoading">⌛ Loading...</p> -->
+
+    <!-- <button  
+      type="button"
+      class="btn btn-outline-primary"
+      (click)="
+         action.start()
+      "
+    >
+    <span class="material-icons">
+      qr_code
+      </span>
+    </button> -->
+    <div class="center">
+      <button
+        type="button"
+        class="btn btn-outline-primary m-2"
+        (click)="action.isStart ? action.stop() : action.start(); onScan()"
+      >
+        <span class="material-icons"> qr_code_2 </span>
+        {{ action.isStart ? "ยกเลิก" : "สแกนบาร์โค้ด" }}
+      </button>
+      <input type="file" accept="image/*" capture="environment">
+    </div>
+  </div>
+</div>
+
+<div class="spinner-container" *ngIf="action.isLoading">
+  <div class="backdrop"></div>
+  <mat-spinner></mat-spinner>
+</div>

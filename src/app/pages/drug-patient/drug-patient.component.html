@@ -1,0 +1,222 @@
+<div class="spinner-container" *ngIf="isLoading">
+  <div class="backdrop"></div>
+  <mat-spinner></mat-spinner>
+</div>
+<div class="container-fluid">
+  <div class="card" *ngIf="listOrderDetail.length < 1">
+    <div class="grid-container gridHead">
+      <div class="grid-item">
+        <div class="d-flex">
+          <form [formGroup]="campaign">
+            <mat-form-field
+              style="padding-top: 0.9em; width: 140px; margin-right: 8px"
+            >
+              <mat-label>เลือกวัน</mat-label>
+              <input
+                matInput
+                [matDatepicker]="picker"
+                formControlName="picker"
+                (dateChange)="dateChange($event)"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </form>
+          <mat-form-field appearance="fill">
+            <mat-label>เลือกหอผู้ป่วย</mat-label>
+            <mat-select (selectionChange)="selectWard($event)">
+              <mat-option *ngFor="let x of listWard" [value]="x">
+                {{ x.wardcode }} - {{ x.warddesc }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <!-- <div class="grid-item">
+        <div *ngIf="wardSelect">{{ wardSelect.warddesc }}</div>
+      </div> -->
+
+      <div class="grid-item right">
+        <button
+          type="button"
+          class="btn btn-outline-primary mt-3 mb-2"
+          (click)="submitSeach()"
+        >
+          ค้นหา
+        </button>
+      </div>
+    </div>
+
+    <div class="overflow-auto" *ngIf="listPatientInWard.length > 0">
+      <table
+        mat-table
+        [dataSource]="dataPatientInWard"
+        #sortPatientInWard="matSort"
+        matSort
+        class="table table-striped"
+        matSortActive=""
+        matSortDirection=""
+      >
+        <ng-container matColumnDef="bedcode">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>เตียง</th>
+          <td mat-cell *matCellDef="let element" class="">
+            {{ element.bedcode }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="hnPnt">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>HN</th>
+          <td mat-cell *matCellDef="let element" class="">
+            {{ element.hnPnt }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="anPnt">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>AN</th>
+          <td mat-cell *matCellDef="let element" class="">
+            {{ element.anPnt }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="patientname">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>ชื่อผู้ป่วย</th>
+          <td mat-cell *matCellDef="let element" class="">
+            {{ element.patientname }}
+          </td>
+        </ng-container>
+
+        <tr
+          mat-header-row
+          *matHeaderRowDef="displayPatientInWard; sticky: true"
+        ></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: displayPatientInWard; let element"
+          class="pointer"
+          (click)="selectPatient(element)"
+        ></tr>
+      </table>
+    </div>
+    <!-- <div>
+      <mat-paginator
+        #paginPatientInWard="matPaginator"
+        style="display: flex; justify-content: center"
+        [length]="10"
+        [pageSize]="10"
+        [pageSizeOptions]="[10, 20, 50, 100]"
+        showFirstLastButtons
+      >
+      </mat-paginator>
+    </div> -->
+  </div>
+  <div class="card" *ngIf="listOrderDetail.length > 0">
+    <div class="grid-container gridTitle">
+      <div class="grid-item">
+        <b
+          ><span class="material-icons pointer" (click)="back()">
+            arrow_back
+          </span>
+          {{ patientDetail.patientname }}
+        </b>
+      </div>
+      <!-- <div class="grid-item">
+        <b>HN {{ patientDetail.hnPnt }}</b>
+      </div> -->
+      <!-- <div class="grid-item">
+        <b>เตียง {{ patientDetail.bedcode }}</b>
+      </div> -->
+    </div>
+
+    <div class="overflow-auto">
+      <table
+        mat-table
+        [dataSource]="dataOrderDetail"
+        #sortOrderDetail="matSort"
+        matSort
+        class="table table-striped"
+        matSortActive=""
+        matSortDirection=""
+      >
+        <ng-container matColumnDef="prescriptionno">
+          <th mat-header-cell *matHeaderCellDef>รายการยา</th>
+          <td mat-cell *matCellDef="let element" class="">
+            <div>
+              <b>ใบสั่งยาเลขที่ {{ element.prescriptionno }}</b>
+            </div>
+            <table style="width: 100%">
+              <tbody>
+                <tr *ngFor="let x of element.detail">
+                  <td>{{ x.seq }}</td>
+                  <td>{{ x.orderitemname }}</td>
+                  <td>
+                    <b>{{ x.orderqty }}</b> {{ x.orderunitdesc }}
+                  </td>
+                  <td style="text-align: center">
+                    <img
+                      *ngIf="x.img"
+                      [src]="x.img"
+                      alt="รูปภาพ"
+                      style="height: 7.375rem"
+                      (click)="viewImg(x)"
+                      class="pointer"
+                    />
+                    <span
+                      class="material-icons"
+                      style="font-size: 6.3em; color: lightgrey"
+                      *ngIf="!x.img"
+                    >
+                      add_a_photo
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <!-- <div>{{ element.ordercreateTime }} น.</div> -->
+          </td>
+        </ng-container>
+        <!-- <ng-container matColumnDef="detail">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>รายการยา</th>
+          <td mat-cell *matCellDef="let element" class="">
+            <table style="width: 100%">
+              <tbody>
+                <tr *ngFor="let x of element.detail">
+                  <td>{{ x.seq }}</td>
+                  <td>{{ x.orderitemname }}</td>
+                  <td>
+                    <b>{{ x.orderqty }}</b> {{ x.orderunitdesc }}
+                  </td>
+                  <td style="text-align: center">
+                    <img
+                      *ngIf="x.img"
+                      [src]="x.img"
+                      alt="รูปภาพ"
+                      style="height: 7.375rem"
+                      (click)="viewImg(x)"
+                      class="pointer"
+                    />
+                    <span
+                      class="material-icons"
+                      style="font-size: 6.3em; color: lightgrey"
+                      *ngIf="!x.img"
+                    >
+                      add_a_photo
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </ng-container> -->
+
+        <tr
+          mat-header-row
+          *matHeaderRowDef="displayOrderDetail; sticky: true"
+        ></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: displayOrderDetail; let element"
+        ></tr>
+      </table>
+    </div>
+  </div>
+</div>

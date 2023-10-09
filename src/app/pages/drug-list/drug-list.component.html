@@ -1,0 +1,290 @@
+<div class="container-fluid">
+  <div class="card">
+    <div class="grid-container gridHead">
+      <!-- <div class="grid-item"><h2>รายการยาในระบบ</h2></div> -->
+      <div class="grid-item">
+        <mat-form-field>
+          <input matInput (keyup)="drugFilter($event)" #input />
+          <mat-placeholder>ค้นหายา : </mat-placeholder>
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+      </div>
+      <div class="grid-item right pt-2">
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input pointer"
+            type="radio"
+            name="inlineRadioOptions"
+            id="inlineRadio1"
+            value="option1"
+            checked
+            (click)="selectMachine('All')"
+          />
+          <label class="form-check-label pointer" for="inlineRadio1"
+            >ทั้งหมด</label
+          >
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input pointer"
+            type="radio"
+            name="inlineRadioOptions"
+            id="inlineRadio2"
+            value="option2"
+            (click)="selectMachine('Y')"
+          />
+          <label class="form-check-label pointer" for="inlineRadio2"
+            >Robot</label
+          >
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input pointer"
+            type="radio"
+            name="inlineRadioOptions"
+            id="inlineRadio3"
+            value="option3"
+            (click)="selectMachine('N')"
+          />
+          <label class="form-check-label pointer" for="inlineRadio3"
+            >จัดมือ</label
+          >
+        </div>
+      </div>
+    </div>
+    <!-- <div class="row head">
+      <div class="col">รายการยาในระบบ</div>
+      <div class="col center">
+        <mat-form-field>
+          <input matInput (keyup)="drugFilter($event)" #input />
+          <mat-placeholder>ค้นหายา : </mat-placeholder>
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <a
+          href="#Batch/Scanner"
+          class="btn btn-outline-primary"
+          role="button"
+          aria-pressed="true"
+          >สแกนซองยาโรบอท</a
+        >
+      </div>
+      <div class="col right">
+        <div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input pointer"
+              type="radio"
+              name="inlineRadioOptions"
+              id="inlineRadio1"
+              value="option1"
+              checked
+              (click)="selectMachine('All')"
+            />
+            <label class="form-check-label pointer" for="inlineRadio1"
+              >ทั้งหมด</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input pointer"
+              type="radio"
+              name="inlineRadioOptions"
+              id="inlineRadio2"
+              value="option2"
+              (click)="selectMachine('Y')"
+            />
+            <label class="form-check-label pointer" for="inlineRadio2"
+              >Robot</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input pointer"
+              type="radio"
+              name="inlineRadioOptions"
+              id="inlineRadio3"
+              value="option3"
+              (click)="selectMachine('N')"
+            />
+            <label class="form-check-label pointer" for="inlineRadio3"
+              >จัดมือ</label
+            >
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+    <table
+      mat-table
+      [dataSource]="dataAllDrug"
+      #sortAllDrug="matSort"
+      matSort
+      class="table table-striped"
+      matSortActive=""
+      matSortDirection=""
+    >
+      <ng-container matColumnDef="orderitemcode">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>รหัสยา</th>
+        <td mat-cell *matCellDef="let element" class="">
+          {{ element.orderitemcode }}
+        </td>
+      </ng-container>
+      <!-- <ng-container matColumnDef="orderitemENname">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  ชื่อยา
+                </th>
+                <td mat-cell *matCellDef="let element" class="">
+                  {{ element.orderitemENname }}
+                </td>
+              </ng-container> -->
+      <ng-container matColumnDef="orderitemTHname">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>ชื่อยา</th>
+        <td mat-cell *matCellDef="let element" class="">
+          {{ element.orderitemTHname }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="cstnum">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>ตำแหน่ง</th>
+        <td mat-cell *matCellDef="let element" class="">
+          <div *ngIf="element.cstnum">C {{ element.cstnum }}</div>
+          <div *ngIf="!element.cstnum">MDU</div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="shape">
+        <th mat-header-cell *matHeaderCellDef>รูปร่าง</th>
+        <td mat-cell *matCellDef="let element" class="">
+          {{ element.shape }}
+          <div *ngIf="!element.shape">-</div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="color">
+        <th mat-header-cell *matHeaderCellDef>สี</th>
+        <td mat-cell *matCellDef="let element" class="">
+          {{ element.color }}
+          <div *ngIf="!element.color">-</div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="img">
+        <th mat-header-cell *matHeaderCellDef>รูปยา</th>
+        <td mat-cell *matCellDef="let element" class="center">
+          <img
+            *ngIf="element.img"
+            [src]="element.img"
+            alt="รูปภาพ"
+            style="width: 7.375rem"
+            (click)="viewImg(element)"
+            class="pointer"
+          />
+          <span
+            class="material-icons"
+            style="font-size: 6.3em; color: lightgrey"
+            *ngIf="!element.img"
+          >
+            add_a_photo
+          </span>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="uses">
+        <th mat-header-cell *matHeaderCellDef>วิธีใช้ยา</th>
+        <td mat-cell *matCellDef="let element" class="">
+          <div>{{ element.uses1 }}</div>
+          <div>{{ element.uses2 }}</div>
+          <div>{{ element.uses3 }}</div>
+          <div>{{ element.uses4 }}</div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="sendmachine">
+        <th mat-header-cell *matHeaderCellDef>ส่งเครื่อง</th>
+        <td mat-cell *matCellDef="let element" class="center">
+          <span
+            class="material-icons pointer Y"
+            *ngIf="element.sendmachine == 'Y'"
+            (click)="switchDrug(element)"
+          >
+            toggle_on </span
+          ><span
+            class="material-icons pointer N"
+            *ngIf="element.sendmachine == 'N'"
+            (click)="switchDrug(element)"
+          >
+            toggle_off
+          </span>
+          <!-- <i
+                class="fas fa-toggle-on h2 pointer"
+                style="color: green;"
+                *ngIf="element.sendmachine == 'Y'"
+                (click)="switchDrug(element)"
+              ></i> -->
+          <!-- <i
+                class="fas fa-toggle-off h2 pointer"
+                style="color: gray"
+                *ngIf="element.sendmachine == 'N'"
+                (click)="switchDrug(element)"
+              ></i> -->
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayAllDrug; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayAllDrug"></tr>
+    </table>
+
+    <div class="row">
+      <div class="col"></div>
+      <div class="col-md-auto">
+        <mat-paginator
+          #paginAllDrug="matPaginator"
+          style="display: flex; justify-content: center"
+          [length]="5"
+          [pageSize]="5"
+          [pageSizeOptions]="[5, 25, 50, 100]"
+          showFirstLastButtons
+        >
+        </mat-paginator>
+      </div>
+      <div class="col right">
+        <p class="edit" *ngIf="!showBtnPrint">
+          <span class="material-icons"> hourglass_top </span>กำลังโหลดรูปภาพ
+        </p>
+        <button
+          type="button"
+          class="btn btn-outline-primary"
+          (click)="printPreview()"
+          *ngIf="showBtnPrint"
+        >
+          พิมพ์
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="spinner-container" *ngIf="isLoading">
+  <div class="backdrop"></div>
+  <mat-spinner></mat-spinner>
+</div>
+
+<div  class="print">
+  <table>
+    <tr *ngFor="let x of arrPrint" class="mb-2">
+      <td>
+        <img
+          *ngIf="x.img"
+          [src]="x.img"
+          alt="รูปภาพ"
+          style="height: 15rem"
+        />
+      </td>
+      <td style="vertical-align: top;">
+        {{ x.orderitemTHname }} <br />
+        {{ x.shape }} {{ x.color }}<br />
+        {{ x.uses1 }}<br />
+        {{ x.uses2 }}<br />
+        {{ x.uses3 }}<br />
+        {{ x.uses4 }}<br />
+      </td>
+    </tr>
+  </table>
+</div>

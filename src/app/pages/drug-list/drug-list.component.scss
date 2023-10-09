@@ -1,0 +1,34 @@
+.Y {
+  color: green;
+  font-weight: bold;
+  font-size: 3.125rem;
+}
+
+.N {
+  color: grey;
+  font-weight: bold;
+  font-size: 3.125rem;
+}
+
+.btn:hover {
+  opacity: 0.5;
+}
+
+
+.gridHead {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+
+/* CSS เพื่อซ่อนตัวแสดงบนหน้าเว็บ */
+.print {
+  display: none;
+}
+
+/* CSS เพื่อแสดงเฉพาะใน print preview */
+@media print {
+  .print {
+    display: block;
+  }
+}

@@ -1,0 +1,128 @@
+<div class="spinner-container" *ngIf="isLoading">
+  <div class="backdrop"></div>
+  <mat-spinner></mat-spinner>
+</div>
+<div class="container-fluid">
+  <div class="card">
+    <div class="row">
+      <div class="col-md-auto">
+        <h2>รายการจ่ายยา Cassette</h2>
+      </div>
+      <div class="col">
+        <mat-form-field
+        class="example-form-field"
+        style="float: left; padding: 0; width: 240px"
+      >
+        <!-- <mat-label>เลือกช่วงวันที่</mat-label> -->
+        <mat-date-range-input
+          [formGroup]="campaignOne"
+          [rangePicker]="campaignOnePicker"
+          [comparisonStart]="campaignOne.value.start"
+          [comparisonEnd]="campaignOne.value.end"
+        >
+          <input
+            matStartDate
+            placeholder="วันที่ เริ่มต้น"
+            formControlName="start"
+            (dateChange)="startChange($event)"
+          />
+          <input
+            matEndDate
+            placeholder="สิ้นสุด"
+            formControlName="end"
+            (dateChange)="endChange($event)"
+          />
+        </mat-date-range-input>
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="campaignOnePicker"
+        ></mat-datepicker-toggle>
+        <mat-date-range-picker #campaignOnePicker></mat-date-range-picker>
+      </mat-form-field>
+      </div>
+    </div>
+
+    <div class="overflow-auto">
+      <table
+        mat-table
+        [dataSource]="dataAllDis"
+        #sortAllDis="matSort"
+        matSort
+        class="table table-striped"
+        matSortActive="drugName"
+        matSortDirection="asc"
+        matTableExporter
+        #exporterAllDis="matTableExporter"
+      >
+        <ng-container matColumnDef="drugCode">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>รหัสยา</th>
+          <td mat-cell *matCellDef="let element" class="">
+            {{ element.drugCode }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="drugName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>ชื่อยา</th>
+          <td mat-cell *matCellDef="let element" class="">
+            {{ element.drugName }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="cstNum">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>ตำแหน่ง</th>
+          <td mat-cell *matCellDef="let element" class="">
+            C {{ element.cstNum }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="total">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            จำนวนที่จ่าย
+          </th>
+          <td mat-cell *matCellDef="let element" class="right">
+            <b>{{ element.total }}</b>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="cstQty">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            คงเหลือ (ปัจจุบัน)
+          </th>
+          <td mat-cell *matCellDef="let element" class="right">
+            {{ element.cstQty }}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayAllDis; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayAllDis"></tr>
+      </table>
+    </div>
+    <div class="row">
+      <div class="col p-3"></div>
+      <div class="col-5 center">
+        <mat-paginator
+          #paginAllDis="matPaginator"
+          style="display: flex; justify-content: center"
+          [length]="10"
+          [pageSize]="10"
+          [pageSizeOptions]="[10, 25, 50]"
+          showFirstLastButtons
+        >
+        </mat-paginator>
+      </div>
+      <div class="col right pt-2">
+        <!-- {{ currentDate }} {{ currentTime }} -->
+
+        <button
+          type="button"
+          class="btn btn-outline-primary"
+          (click)="
+            exporterAllDis.exportTable('csv', {
+              fileName: 'รายการยา Cassette จ่ายวันที่ ' + currentDate,
+              sheet: 'sheet1',
+              Props: { Author: 'Talha' }
+            })
+          "
+        >
+          ส่งออกไฟล์
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

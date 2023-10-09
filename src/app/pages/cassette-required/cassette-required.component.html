@@ -1,0 +1,307 @@
+<div class="spinner-container" *ngIf="isLoading">
+  <div class="backdrop"></div>
+  <mat-spinner></mat-spinner>
+</div>
+<div class="container-fluid">
+  <div class="card">
+    <mat-tab-group>
+      <mat-tab label="รายการยา Cassette ทั้งหมด">
+        <div class="overflow-auto">
+          <table
+            mat-table
+            [dataSource]="dataAllCst"
+            #sortAllCst="matSort"
+            matSort
+            class="table table-striped"
+            matSortActive="orderitemname"
+            matSortDirection="asc"
+            matTableExporter
+            #exporterAllCst="matTableExporter"
+          >
+            <ng-container matColumnDef="orderitemcode">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>รหัสยา</th>
+              <td mat-cell *matCellDef="let element" class="">
+                {{ element.orderitemcode }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="orderitemname">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>ชื่อยา</th>
+              <td mat-cell *matCellDef="let element" class="">
+                {{ element.orderitemname }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="cst_num">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>ตำแหน่ง</th>
+              <td mat-cell *matCellDef="let element" class="">
+                C {{ element.cst_num }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="total">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                จำนวนที่ต้องการ
+              </th>
+              <td mat-cell *matCellDef="let element" class="right">
+                {{ element.total }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="tblt_qty">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                จำนวนยาใน Cassette
+              </th>
+              <td mat-cell *matCellDef="let element" class="right">
+                {{ element.tblt_qty }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="cst">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                จำนวนที่ต้องเติม
+              </th>
+              <td mat-cell *matCellDef="let element" class="right">
+                <div *ngIf="element.cst > 0" class="bold">
+                  {{ element.cst }}
+                </div>
+                <div *ngIf="element.cst < 1">0</div>
+              </td>
+            </ng-container>
+
+            <tr
+              mat-header-row
+              *matHeaderRowDef="displayAllCst; sticky: true"
+            ></tr>
+            <tr mat-row *matRowDef="let row; columns: displayAllCst"></tr>
+          </table>
+        </div>
+        <div class="row">
+          <div class="col p-3">
+            <div class="form-group form-check">
+              <input
+                type="checkbox"
+                class="form-check-input pointer"
+                id="exampleCheckall"
+                (change)="selectAllRefill()"
+              />
+              <label
+                class="form-check-label"
+                for="exampleCheckall"
+                class="pointer"
+                >แสดงเฉพาะที่ต้องเติม</label
+              >
+            </div>
+          </div>
+          <div class="col-5 center">
+            <mat-paginator
+              #paginAllCst="matPaginator"
+              style="display: flex; justify-content: center"
+              [length]="10"
+              [pageSize]="10"
+              [pageSizeOptions]="[10, 25, 50]"
+              showFirstLastButtons
+            >
+            </mat-paginator>
+          </div>
+          <div class="col right pt-2">
+            <!-- {{ currentDate }} {{ currentTime }} -->
+
+            <button
+              type="button"
+              class="btn btn-outline-primary"
+              (click)="
+                exporterAllCst.exportTable('csv', {
+                  fileName: 'รายการยา Cassette ทั้งหมด ' + currentDate,
+                  sheet: 'sheet1',
+                  Props: { Author: 'Talha' }
+                })
+              "
+            >
+              ส่งออกไฟล์
+            </button>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="รายการยา Cassette เลือกหอผู้ป่วย">
+        <div class="grid-container grid-dispen">
+          <div
+            class="grid-item"
+            style="
+              border-right: 0.1px solid lightgray;
+              padding-left: 0.5em;
+              padding-left: 0;
+            "
+          >
+            <!-- <div class="p-3">เลือกหอผู้ป่วย</div> -->
+            <div class="overflow-auto">
+              <table
+                mat-table
+                [dataSource]="dataWard"
+                #sortWard="matSort"
+                matSort
+                class="table"
+                matSortActive="warddesc"
+                matSortDirection="asc"
+              >
+                <ng-container matColumnDef="warddesc">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    หอผู้ป่วย
+                  </th>
+                  <td mat-cell *matCellDef="let element" class="hov">
+                    <div (click)="selectWard(element)" class="pointer">
+                      {{ element.wardcode }} - {{ element.warddesc }}
+                      <b>({{ element.note }})</b>
+                    </div>
+                  </td>
+                </ng-container>
+
+                <tr
+                  mat-header-row
+                  *matHeaderRowDef="displayWard; sticky: true"
+                ></tr>
+                <tr
+                  mat-row
+                  *matRowDef="let row; columns: displayWard; let element"
+                  class="{{ element.rowNum == selectRow ? 'bkselect' : '' }}"
+                ></tr>
+              </table>
+            </div>
+            <div class="">
+              <mat-paginator
+                #paginWard="matPaginator"
+                style="display: flex; justify-content: center"
+                [length]="10"
+                [pageSize]="10"
+                [hidePageSize]="true"
+                showFirstLastButtons
+              >
+              </mat-paginator>
+            </div>
+          </div>
+          <div class="grid-item">
+            <div class="p-3">
+              {{ wardName }}
+              <b
+                ><u>{{ numItemWard }}</u></b
+              >
+              รายาการ
+            </div>
+            <div [hidden]="!dataWardCst">
+              <div class="overflow-auto">
+                <table
+                  mat-table
+                  [dataSource]="dataWardCst"
+                  #sortWardCst="matSort"
+                  matSort
+                  class="table table-striped"
+                  matSortActive="orderitemname"
+                  matSortDirection="asc"
+                  matTableExporter
+                  #exporterWardCst="matTableExporter"
+                >
+                  <ng-container matColumnDef="orderitemcode">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                      รหัสยา
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="">
+                      {{ element.orderitemcode }}
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="orderitemname">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                      ชื่อยา
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="">
+                      {{ element.orderitemname }}
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="cst_num">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                      ตำแหน่ง
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="">
+                      C {{ element.cst_num }}
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="total">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                      จำนวนที่ต้องการ
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="right">
+                      {{ element.total }}
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="tblt_qty">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                      จำนวนยาใน Cassette
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="right">
+                      {{ element.tblt_qty }}
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="cst">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                      จำนวนที่ต้องเติม
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="right">
+                      <div *ngIf="element.cst > 0" class="bold">
+                        {{ element.cst }}
+                      </div>
+                      <div *ngIf="element.cst < 1">0</div>
+                    </td>
+                  </ng-container>
+                  <tr
+                    mat-header-row
+                    *matHeaderRowDef="displayWardCst; sticky: true"
+                  ></tr>
+                  <tr
+                    mat-row
+                    *matRowDef="let row; columns: displayWardCst"
+                  ></tr>
+                </table>
+              </div>
+              <div class="row">
+                <div class="col p-3">
+                  <input
+                    type="checkbox"
+                    id="exampleCheckWard"
+                    class="pointer ml-2"
+                    [checked]="isChecked"
+                    (change)="toggleCheckbox()"
+                  />
+                  <label for="exampleCheckWard" class="ml-1 pointer"
+                    >แสดงเฉพาะที่ต้องเติม</label
+                  >
+                </div>
+                <div class="col-6">
+                  <mat-paginator
+                    #paginWardCst="matPaginator"
+                    style="display: flex; justify-content: center"
+                    [length]="10"
+                    [pageSize]="10"
+                    [pageSizeOptions]="[10, 25, 50]"
+                    showFirstLastButtons
+                  >
+                  </mat-paginator>
+                </div>
+                <div class="col right pt-2">
+                  <!-- {{ currentDate }} {{ currentTime }} -->
+                  <button
+                    type="button"
+                    class="btn btn-outline-primary mr-2"
+                    (click)="
+                      exporterWardCst.exportTable('csv', {
+                        fileName:
+                          'รายการยา Cassette ' + wardName + ' ' + currentDate,
+                        sheet: 'sheet1',
+                        Props: { Author: 'Talha' }
+                      })
+                    "
+                  >
+                    ส่งออกไฟล์
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

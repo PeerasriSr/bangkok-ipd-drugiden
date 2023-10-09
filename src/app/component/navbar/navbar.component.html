@@ -1,0 +1,127 @@
+<div (click)="timerOut(1)">
+  <nav class="navbar navbar-dark bg-dark navbar-expand-lg shadow">
+    <a class="navbar-brand" href="#">
+      <!-- <img src="/assets/logo/M-title.png" /> -->
+      <img src="/MedManagement/assets/logo/M-title.png" />
+      ระบบจัดยาอัตโนมัติ {{ hospital_name }}</a
+    >
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <!-- <li class="nav-item active">
+          <a class="nav-link" href="#"
+            >Home <span class="sr-only">(current)</span></a
+          >
+        </li> -->
+        <li class="nav-item">
+          <a class="nav-link" href="#Drug/List" (click)="closeLink()"
+            >รายการยาในระบบ</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#Drug/Patient" (click)="closeLink()"
+            >ยาคนไข้</a
+          >
+        </li>
+        <!-- <li class="nav-item" *ngIf="userName">
+          <a class="nav-link" href="#Batch/Scanner" (click)="closeLink()"
+            >สแกนซองยาโรบอท</a
+          >
+        </li> -->
+
+        <li class="nav-item dropdown" *ngIf="userName">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            role="button"
+            data-toggle="dropdown"
+            aria-expanded="false"
+          >
+            ตู้จ่าย
+          </a>
+          <div class="dropdown-menu" *ngIf="userName">
+            <a
+              class="dropdown-item"
+              href="#Cassette/Dispense"
+              (click)="closeLink()"
+              >Cassette Dispense</a
+            >
+            <a
+              class="dropdown-item"
+              href="#Cassette/Required"
+              (click)="closeLink()"
+              >Cassette Required</a
+            >
+            <a class="dropdown-item" href="#MDU/Required" (click)="closeLink()"
+              >MDU Required</a
+            >
+            <!-- <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Something else here</a> -->
+          </div>
+        </li>
+        <li class="nav-item dropdown" *ngIf="userName">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            role="button"
+            data-toggle="dropdown"
+            aria-expanded="false"
+          >
+            การจัดการ
+          </a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="#Drug/Time" (click)="closeLink()"
+              >วิธิใช้ยา</a
+            >
+          </div>
+        </li>
+      </ul>
+      <ul class="navbar-nav mr-auto" *ngIf="!userName"></ul>
+      <!-- <form class="form-inline my-2 my-lg-0">
+        <input
+          class="form-control mr-sm-2"
+          type="search"
+          placeholder="Search"
+          aria-label="Search"
+        />
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+          Search
+        </button>
+      </form> -->
+      <div *ngIf="!userName">
+        <a href="#Login">เข้าสู่ระบบ </a>
+      </div>
+      <!-- <div *ngIf="userName">
+        <label class="h5 mr-2 text-white">{{ userName }}</label>
+        <button class="btn btn-outline-danger" (click)="goLogout()">
+          <span class="material-icons"> logout </span>
+        </button>
+      </div> -->
+      <div class="dropdown" *ngIf="userName">
+        <a
+          class="dropdown-toggle pointer"
+          data-toggle="dropdown"
+          aria-expanded="false"
+          >{{ userName }}</a
+        >
+        <div class="dropdown-menu">
+          <a class="dropdown-item" (click)="goLogout()">ออกจากระบบ</a>
+          <!-- <a class="dropdown-item" href="#">Another action</a>
+          <a class="dropdown-item" href="#">Something else here</a> -->
+        </div>
+      </div>
+    </div>
+  </nav>
+  <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,19 @@
+.gridHead {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.gridTitle {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
+
+.gridBody {
+  display: grid;
+  grid-template-columns: 25% auto;
+}
+
+
+// .mat-form-field {
+//   width: 160px;
+// }

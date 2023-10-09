@@ -1,0 +1,188 @@
+/* You can add global styles to this file, and also import other style files */
+* {
+  font-size: 1rem;
+}
+
+html {
+  font-size: calc(60% + 0.8vmin) !important;
+}
+
+html,
+body {
+  height: 100%;
+  background: whitesmoke;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.container-fluid {
+  padding: 0.5rem;
+}
+
+.center {
+  text-align: center;
+}
+
+.left {
+  text-align: left;
+}
+
+.right {
+  text-align: right;
+}
+
+span {
+  padding: 0;
+}
+
+.cdk-global-overlay-wrapper,
+.cdk-overlay-container {
+  z-index: 99999 !important;
+}
+
+.mat-tab-body-content {
+  overflow: unset !important;
+}
+
+.table thead th,
+td.mat-cell {
+  vertical-align: middle;
+  // border: unset !important;
+}
+
+th.mat-header-cell:first-of-type,
+td.mat-cell:first-of-type,
+td.mat-footer-cell:first-of-type {
+  // padding-left: 4px !important;
+}
+
+th.mat-header-cell:last-of-type,
+td.mat-cell:last-of-type,
+td.mat-footer-cell:last-of-type {
+  // padding-right: 4px !important;
+}
+
+.mat-header-cell {
+  font-size: 0.75rem;
+}
+.mat-cell,
+.mat-footer-cell {
+  font-size: 0.875rem;
+}
+
+.mat-sort-header-container {
+  justify-content: center;
+}
+th.mat-header-cell {
+  text-align: center !important;
+}
+
+.spinner-container {
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.backdrop {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-dialog {
+  // display: flex;
+  // align-items: center;
+  // justify-content: center;
+  // height: 100%;
+  margin-top: 3.875rem;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.pointer:hover {
+  color: gray;
+}
+
+.card {
+  padding: 0.5rem;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.head {
+  font-weight: bold;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.mat-tab-group.mat-primary .mat-ink-bar {
+  background-color: unset;
+}
+
+.mat-tab-label.mat-tab-label-active {
+  background-color: #055c9d;
+  color: #fff;
+  // font-weight: bold;
+  opacity: 1;
+  // background-color: #6610f2 ;
+}
+
+.material-icons {
+  vertical-align: middle;
+}
+
+.bkselect {
+  color: #fff;
+  background-color: #0e86d4;
+  .edit, .del {
+    color: #fff;
+  }
+  
+}
+.bkselect .mat-cell{
+  color: #fff;
+}
+
+.edit {
+  color: #007bff;
+  cursor: pointer;
+}
+
+.edit:hover {
+  color: lightgray;
+}
+
+.del {
+  color: #dc4731;
+  cursor: pointer;
+}
+
+.del:hover {
+  color: lightgray;
+}
+
+
+.mat-form-field-appearance-legacy
+  .mat-form-field-prefix
+  .mat-datepicker-toggle-default-icon,
+.mat-form-field-appearance-legacy
+  .mat-form-field-suffix
+  .mat-datepicker-toggle-default-icon {
+  font-size: 2rem;
+}

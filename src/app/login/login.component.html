@@ -1,0 +1,44 @@
+<div class="container">
+  <div class="card p-4">
+    <div class="center">
+      <div>
+        <!-- <img src="/assets/logo/M-login.png" /> -->
+        <img src="/MedManagement/assets/logo/M-login.png" />
+        <h1 style="margin-bottom: 0; margin-top: 16px">ระบบจัดยาอัตโนมัติ</h1>
+        <h2 style="color: gray">{{ hospital_name }}</h2>
+      </div>
+      <form
+        [formGroup]="loginForm"
+        (ngSubmit)="loginSubmit()"
+        style="font-size: 18px"
+      >
+        <div class="">
+          <!-- <label for="username">Username</label> -->
+          <input
+            type="text"
+            id="username"
+            formControlName="username"
+            placeholder="username"
+            required
+            class="form-control"
+          />
+          <!-- <label for="password">Password</label> -->
+          <input
+            type="password"
+            id="password"
+            formControlName="password"
+            placeholder="password"
+            required
+            class="form-control mt-4"
+          />
+        </div>
+        <div class="mt-4">
+          <a class="btn btn-secondary mr-2" href="#Drug/List"
+            ><span class="material-icons"> home </span> หน้าหลัก</a
+          >
+          <button type="submit" class="btn btn-primary">เข้าสู่ระบบ</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
